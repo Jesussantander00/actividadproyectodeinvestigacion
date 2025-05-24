@@ -1,0 +1,81 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+' Clases principales
+class GrupoEmpresarial {
+  +nombre : String
+}
+
+class InstitucionEducativa {
+  +nombre : String
+  +tipo : String <<Privada/SemiPrivada>>
+  +nivel : String <<Escolar/Técnica/Profesional/NoFormal>>
+}
+
+class GrupoInvestigacion {
+  +nombre : String
+  +lineasInvestigacion : String
+}
+
+class Investigador {
+  +nombre : String
+  +rol : String <<Docente/Estudiante/Egresado>>
+  +categoria : String
+}
+
+class ProyectoInvestigacion {
+  +titulo : String
+  +estado : String
+}
+
+class ActividadInvestigacion {
+  +descripcion : String
+  +fechaInicio : Date
+  +fechaFin : Date
+}
+
+class ProductoInvestigacion {
+  +nombre : String
+  +tipo : String
+  +grupo : String
+  +categoria : String
+  +fechaPublicacion : Date
+  +puntos : int
+  +estado : String
+  +idPublicacion : String
+}
+
+class Recurso {
+  +tipo : String
+  +descripcion : String
+}
+
+class Colciencias {
+  +nombre : String
+  +reglasEvaluacion() : void
+}
+
+class Ministerio {
+  +nombre : String
+}
+
+' Relaciones
+GrupoEmpresarial "1" -- "many" InstitucionEducativa : posee >
+InstitucionEducativa "1" -- "many" GrupoInvestigacion : contiene >
+GrupoInvestigacion "1" -- "many" Investigador : agrupa >
+GrupoInvestigacion "1" -- "many" ProyectoInvestigacion : lidera >
+ProyectoInvestigacion "1" -- "many" ActividadInvestigacion : desarrolla >
+ActividadInvestigacion "1" -- "many" Recurso : requiere >
+ActividadInvestigacion "1" -- "many" ProductoInvestigacion : genera >
+ActividadInvestigacion "1" -- "1" Investigador : investigadorPrincipal >
+ActividadInvestigacion "1" -- "many" Investigador : coinvestigadores >
+ProductoInvestigacion "1" -- "many" Investigador : autores >
+ProyectoInvestigacion "1" -- "many" Investigador : participantes >
+
+' Registros y Evaluaciones
+Colciencias "1" -- "many" ProductoInvestigacion : evalúa >
+Colciencias "1" -- "many" Investigador : categoriza >
+Colciencias "1" -- "1" Ministerio : reguladoPor >
+
+@enduml
